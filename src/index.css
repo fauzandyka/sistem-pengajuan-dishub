@@ -33,3 +33,18 @@ code {
     }
   }
 }
+
+/* Reduce font size for smaller screens */
+@media (max-width: 640px) {
+  table {
+    font-size: 14px;
+  }
+}
+
+/* Hide certain columns for smaller screens */
+@media (max-width: 480px) {
+  th:nth-child(2),
+  td:nth-child(2) {
+    display: none;
+  }
+}
