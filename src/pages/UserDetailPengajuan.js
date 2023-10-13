@@ -2,6 +2,9 @@ import { Form, Link } from "react-router-dom";
 import { createColumnHelper } from "@tanstack/react-table";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { AiFillEye } from "react-icons/ai";
+import ModalDetailPengajuan from "../components/ModalDetailPengajuan";
+import { useContext, useEffect, useState } from "react";
+import ModalProvider, { ModalContext } from "../context/ModalContext";
 
 const data = [
   {
@@ -24,37 +27,16 @@ const data = [
   },
 ];
 
-const columnHelper = createColumnHelper();
-
-const columns = [
-  columnHelper.accessor("nomor_kendaraan", {
-    header: () => "Nomor Kendaraan",
-    cell: (info) => info.renderValue(),
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("tanggal_pengajuan", {
-    header: () => "Jenis Perbaikan",
-    cell: (info) => info.renderValue(),
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("jenis_perbaikan", {
-    header: () => "Jenis Perbaikan",
-    cell: (info) => info.renderValue(),
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("status", {
-    header: () => "Status",
-    cell: (info) => info.renderValue(),
-    footer: (info) => info.column.id,
-  }),
-];
-
 const UserDetailPengajuan = () => {
+  const { setStatus, status } = useContext(ModalContext);
+
+  useEffect(() => {}, [status]);
+
   return (
     <div className="w-full flex justify-center mt-20 mb-20">
       <div className="flex flex-col gap-2 border-2 border-white pl-10 pr-10 pb-20 pt-2 rounded-md mr-10 ml-10">
         <h1 className="text-white font-semibold text-2xl">
-          Detail Pengajuan KT 1234 BR
+          Detail Pengajuan: KT 1234 BR
         </h1>
         <div className="text-white bg-[rgba(255, 255, 255, 1)]  border-2 border-white">
           <div className="my-4 mx-auto max-w-screen-lg">
@@ -73,16 +55,19 @@ const UserDetailPengajuan = () => {
                     key={index}
                     className="text-center border-b-2 border-white"
                   >
-                    <td className="border-r-2 border-white">{index}</td>
+                    <td className="border-r-2 border-white">{index + 1}</td>
                     <td className="border-r-2 border-white">
                       {value.tanggal_pengajuan}
                     </td>
                     <td className="border-r-2 border-white">
                       {value.jenis_perbaikan}
                     </td>
-                    <td className="p-3 flex flex-row justify-center">
-                      <div className="bg-[#4179F9] pt-2 pb-2 pl-8 pr-8 rounded-xl">
-                        <AiFillEye size={24} />
+                    <td
+                      onClick={() => setStatus(true)}
+                      className="p-3 flex flex-row justify-center cursor-pointer open-modal-button"
+                    >
+                      <div className="bg-[#4179F9] pt-2 pb-2 pl-8 pr-8 rounded-xl ">
+                        <AiFillEye size={24} className="" />
                       </div>
                     </td>
                   </tr>
@@ -101,6 +86,7 @@ const UserDetailPengajuan = () => {
           </div>
         </div>
       </div>
+      {status ? <ModalDetailPengajuan /> : <></>}
     </div>
   );
 };
