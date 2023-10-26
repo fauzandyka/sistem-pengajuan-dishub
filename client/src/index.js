@@ -9,7 +9,7 @@ import Loginpage from "./pages/LoginPage";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import AdminDetailPengajuan from "./pages/AdminDetailPengajuan";
 import UserDetailPengajuan from "./pages/UserDetailPengajuan";
-import ModalProvider, { ModalContext } from "./context/ModalContext";
+import ModalProvider from "./context/ModalContext";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <DashboardAdmin />,
       },
       {
-        path: "/admin/detail",
+        path: "/admin/detail/:id",
         element: <AdminDetailPengajuan />,
       },
       {

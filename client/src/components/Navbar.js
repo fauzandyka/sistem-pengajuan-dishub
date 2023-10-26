@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import LogoDishub from "../images/logo_dishub.png";
 import LogoBalikpapan from "../images/logo_kota_balikpapan.png";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserContex";
 
 function Navbar() {
-  const pathname = window.location.pathname;
+  const { status } = useContext(UserContext);
   return (
     <nav className="bg-gray-500 backdrop-blur-md bg-opacity-50 flex items-center justify-center  py-3 mb-3 ">
       <div className="flex flex-row w-[80%] justify-between">
@@ -27,8 +28,10 @@ function Navbar() {
           </ul>
         </div>
         <div className="flex flex-col items-center justify-center">
-          {pathname === "/login" ? (
-            <></>
+          {status ? (
+            <>
+              <img src={require("../images/leave.png")} alt="" />
+            </>
           ) : (
             <Link
               to={"login"}

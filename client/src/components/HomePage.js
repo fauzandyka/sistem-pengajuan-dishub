@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import Search from "../images/search.png";
 import { Link } from "react-router-dom";
+import { fetchDataFromApi } from "../utils/fetchApi";
 
 function Homepage() {
   const [query, setQuery] = useState();
   const [result, setResult] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  console.log(result);
 
   const search = (e) => {
     e.preventDefault();
-    fetch("", {
-      method: "POST",
-      body: query,
-    }).then((value) => {
-      setResult(value);
-    });
-    // TODO : Change The endpoint to API
+
+    // Set loading to true immediately
+    setLoading(true);
+
+    fetchDataFromApi(`/kendaraan/search?nomorKendaraan=${query}`)
+      .then((response) => {
+        // Simulate a 5-second loading delay
+        setTimeout(() => {
+          setLoading(false); // Turn off the loading state
+          setResult(response.data);
+        }, 3000);
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setLoading(false); // Turn off the loading state
+        }, 3000);
+      });
   };
   return (
     <div className="w-full flex justify-center flex-col">
@@ -51,6 +66,15 @@ function Homepage() {
           </button>
         </div>
       </div>
+      {loading ? (
+        <>
+          <div className="mx-auto mt-10 animate-pulse text-2xl font-bold">
+            LOADING
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
       {result ? (
         <div className="mb-20 mx-auto text-white bg-indigo-900 border border-white border-solid rounded-2xl mt-2">
           <div className="flex px-4 py-4 ">
@@ -67,23 +91,24 @@ function Homepage() {
               </div>
               <div className="w-full mb-4 flex px-[22px] py-[7px] relative max-w-[114px] box-border items-center rounded-tl-[9px] rounded-br-[9px] rounded-tr-[9px] rounded-bl-[9px] justify-center bg-blue-800">
                 <p className="text-[12px] text-left font-['DM_Sans',_sans-serif] font-normal leading-[16px] tracking-[0px] normal-case">
-                  Nomor
+                  {result ? result.platKendaraan : "nomor"}
                 </p>
               </div>
               <div className="w-full max-w-[auto] min-h-[auto] text-left">
                 <p className="text-[12px] text-left font-['DM_Sans',_sans-serif] font-medium tracking-[1px]">
-                  Nomor Handphone
+                  Pemegang Kendaraan
                 </p>
               </div>
               <div className="w-full mb-4 flex px-[22px] py-[7px] relative max-w-[114px] box-border items-center rounded-tl-[9px] rounded-br-[9px] rounded-tr-[9px] rounded-bl-[9px] justify-center bg-blue-800">
                 <p className="text-[12px] text-left font-['DM_Sans',_sans-serif]">
-                  Nomor
+                  {result ? result.namaPemegang : "nomor"}
                 </p>
               </div>
             </div>
             <div className="flex flex-col-reverse">
               <Link
                 to={"/detail"}
+                state={{ data: result }}
                 className="w-full flex relative max-w-[114px] box-border items-center rounded-tl-[9px] rounded-br-[9px] rounded-tr-[9px] rounded-bl-[9px] justify-center my-2 bg-yellow-500 hover:bg-yellow-600"
               >
                 <p className="px-2 py-2 text-[12px] text-left font-['DM_Sans',_sans-serif] font-normal leading-[16px] mb-0 tracking-[0px] normal-case">
@@ -92,6 +117,7 @@ function Homepage() {
               </Link>
               <Link
                 to={"/formpengajuan"}
+                state={{ data: result }}
                 className="w-full flex relative max-w-[114px] box-border items-center rounded-tl-[9px] rounded-br-[9px] rounded-tr-[9px] rounded-bl-[9px] justify-center my-2 bg-green-500 hover:bg-green-600"
               >
                 <p className="px-2 py-2 text-[12px] text-left font-['DM_Sans',_sans-serif]">
@@ -102,7 +128,17 @@ function Homepage() {
           </div>
         </div>
       ) : (
-        <></>
+        <>
+          {loading ? (
+            <></>
+          ) : (
+            <>
+              <div className="mx-auto mt-10 animate-pulse text-2xl font-bold">
+                Tidak Ada Data Kendaraan
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   );

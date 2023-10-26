@@ -3,8 +3,8 @@ import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
 import { fetchDataFromApi, postDataToApi } from "../utils/fetchApi";
-import ModalDetailPengajuan from "./ModalDetailPengajuan";
-const FormPengajuanPage = () => {
+import ModalDetailPengajuan from "../components/ModalDetailPengajuan";
+const DetailPengajuan = () => {
   const [JenisPerbaikan, setJenisPerbaikan] = useState(true);
   const [jenisKerusakan, setJenisKerusakan] = useState([]);
   const [kersuakanLainnya, setkersuakanLainnya] = useState("");
@@ -12,7 +12,6 @@ const FormPengajuanPage = () => {
   const [form, setForm] = useState();
   const [loading, setLoading] = useState(false);
   const data = useLocation();
-  console.log(data.state.data);
 
   useEffect(() => {
     fetchDataFromApi("/kerusakan")
@@ -36,13 +35,16 @@ const FormPengajuanPage = () => {
     setLoading(true);
     postDataToApi("/perbaikan", form)
       .then((response) => {
+        // Successful response
         setTimeout(() => {
-          setLoading(false);
+          setLoading(false); // Turn off the loading state
           console.log(response);
-        }, 3000);
+        }, 3000); // 5000 milliseconds (5 seconds)
       })
       .catch((error) => {
+        // Error occurred
         setLoading(false);
+        // Handle the error, e.g., show an error message to the user
         console.log("Error posting data:", error);
       });
   };
@@ -153,4 +155,4 @@ const FormPengajuanPage = () => {
   );
 };
 
-export default FormPengajuanPage;
+export default DetailPengajuan;

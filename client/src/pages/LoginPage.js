@@ -1,7 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContex";
 
 function Loginpage() {
+  const { login, status } = useContext(UserContext);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
+  if (status) {
+    navigate("/");
+  }
+
+  const handleLogin = () => {
+    login(data);
+  };
   return (
     <div className="w-full flex justify-center mt-20 mb-20">
       <div className="flex flex-col w-[80%] md:w-[60%] gap-2">
@@ -25,6 +40,13 @@ function Loginpage() {
                 <input
                   className="md:w-[80%] p-2 ml-2 text-xs"
                   placeholder="username@gmail.com"
+                  value={data.email}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      email: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -34,15 +56,22 @@ function Loginpage() {
                 <input
                   className="md:w-[80%]  p-2 ml-2 text-xs"
                   placeholder="Password"
+                  value={data.password}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      password: e.target.value,
+                    })
+                  }
                   type="password"
                 />
               </div>
             </div>
             <div className="flex flex-col gap-1 mt-[4.75rem]">
               <div className="flex flex-row justify-center text-white w-full bg-[#9454D9] rounded-md items-center">
-                <Link to={"/admin"} className="p-1 text-lg font-bold">
+                <button onClick={handleLogin} className="p-1 text-lg font-bold">
                   Sign In
-                </Link>
+                </button>
               </div>
             </div>
           </section>
