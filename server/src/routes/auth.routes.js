@@ -1,10 +1,10 @@
 // import { register } from "../controller/auth/auth.controller";
-const { register } = require("../controller/auth/auth.controller");
-const { route } = require("../utils/express");
+const { register, login } = require("../controller/auth/auth.controller");
+const { createNewRouter } = require("../utils/express");
 
-const routeAuth = route;
+const routeAuth = createNewRouter();
 routeAuth.post("/register/", register);
-
+routeAuth.post("/login/", login);
 module.exports = {
   routeAuth,
 };

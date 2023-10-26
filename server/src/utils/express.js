@@ -1,3 +1,6 @@
 const express = require("express");
-const route = express.Router();
-module.exports = { express, route };
+
+function createNewRouter() {
+  return express.Router();
+}
+module.exports = { express, createNewRouter };
